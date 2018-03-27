@@ -3,21 +3,27 @@ package cn.yd.shop.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.enterprise.inject.New;
+import javax.servlet.DispatcherType;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
+
 
 import cn.yd.shop.dao.ProductDaoImpl;
 import cn.yd.shop.model.Product;
 
+@WebServlet(urlPatterns = "/servlet/ProductServlet")
+
 public class ProductServlet extends HttpServlet {
 
-	ProductDaoImpl productDao = new ProductDaoImpl();
+	private ProductDaoImpl productDao = new ProductDaoImpl();
 	
 	public ProductServlet() {
 		super();
@@ -32,8 +38,11 @@ public class ProductServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-
+		String keyword = request.getParameter("keyword");
+		List<Product> proList = productDao.queryByBame(keyword);
+		request.setAttribute("proList",proList);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/query.jsp");
+		dispatcher.forward(request, response);
 	}
 
 
