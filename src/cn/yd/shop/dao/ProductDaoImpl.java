@@ -22,7 +22,7 @@ public class ProductDaoImpl extends BaseDaoImpl<Product> {
 
 	// 通过id获取指定的商品数据
 	public Product getById(int id) {
-		String sql = "select id,name from product where id = ?";
+		String sql = "select * from product where id = ?";
 		// 接口是不能new,除非实现了接口的定义的所有方法
 		return super.getById(sql, id, new RowMapper<Product>() {
 			@Override
@@ -30,6 +30,8 @@ public class ProductDaoImpl extends BaseDaoImpl<Product> {
 				Product product = new Product();
 				product.setId(rs.getInt("id"));
 				product.setName(rs.getString("name"));
+				product.setPrice(rs.getBigDecimal("price"));
+				product.setRemark(rs.getString("remark"));
 				return product;
 			}
 		});
